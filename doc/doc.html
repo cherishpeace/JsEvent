@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Javascript · jsevent.by cherishpeace</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="assets/css/bootstrap.css" rel="stylesheet">
+    <link href="assets/css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="assets/css/docs.css" rel="stylesheet">
+    <link href="assets/js/google-code-prettify/prettify.css" rel="stylesheet">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le fav and touch icons -->
+    <link rel="shortcut icon" href="assets/ico/favicon.ico">
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="assets/ico/apple-touch-icon-57-precomposed.png">
+
+  </head>
+
+  <body data-spy="scroll" data-target=".bs-docs-sidebar">
+
+    <!-- Navbar
+    ================================================== -->
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="brand" href="./doc.html">jsevent</a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li class="">
+                <a href="#">欢迎使用jsevent</a>
+              </li>
+              
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+<!-- Subhead
+================================================== -->
+<header class="jumbotron subhead">
+  <div class="container">
+    <h1>JsEvent</h1>
+    <p class="lead">提供对javascript事件的封装&mdash;包括对系统事件的集成，以及自定义事件的封装.
+  </div>
+</header>
+
+  <div class="container">
+
+    <!-- Docs nav
+    ================================================== -->
+    <div class="row">
+      <div class="span3 bs-docs-sidebar">
+        <ul class="nav nav-list bs-docs-sidenav">
+		 
+          <li><a href="#info"><i class="icon-chevron-right"></i> 简介</a></li>
+          <li><a href="#howtouse"><i class="icon-chevron-right"></i> 使用方式</a></li>
+          <li><a href="#api"><i class="icon-chevron-right"></i> api一览</a></li>
+          <li><a href="#contact"><i class="icon-chevron-right"></i> 联系方式</a></li>
+         
+      
+        </ul>
+      </div>
+      <div class="span9">
+
+
+        <section id="info">
+          <div class="page-header">
+            <h1>JsEvent简介</h1>
+          </div>
+
+          <h3>背景</h3>
+          <p>Javascript的事件一直都饱受诟病，jsevent对事件进行了封转，包括两部分。一部分是对系统事件的封装，另外一部分是用来自定义事件的，同时实现了自定义事件的异步调用队列。</p>
+
+          <h3>使用场景一</h3>
+          <p>当你需要设置click，mouseover这些系统事件监听，但是不想花时间处理各个浏览器的兼容性问题时，你可以使用jsevent</p>
+
+          
+          <h3>使用场景二</h3>
+          <p>当你需要自定义自己的事件，又不想自己去编写事件队列代码时，可以使用jsevent</p>
+
+		  <h3>使用场景三</h3>
+          <p>当你需要一个异步事件队列，即希望某几个事件执行后触发一个回调函数。你可以使用jsevent。jsevent提供一种机制，将串行等待变成并行等待，提升多异步场景下的执行效率，移除被广为诟病的深度callback嵌套问题。</p>
+
+
+        </section>
+
+		 <section id="howtouse">
+          <div class="page-header">
+            <h1>如何使用jsevent</h1>
+          </div>
+
+          <h3>准备工作</h3>
+          <p>引入库文件</p>
+<pre class="prettyprint linenums">
+&lt;script src="jsevent.js"&gt;&lt;/script&gt;
+</pre>
+ <p>生成jsevent对象</p>
+<pre class="prettyprint linenums">
+e = new JsEvent();
+</pre>
+          <h3>使用系统事件</h3>
+         
+		 <p> 增加一个系统事件监听：</p>
+
+<pre class="prettyprint linenums">
+dom = document.getElementById('a');
+fn = function(event){alert("hah1");};
+e.bind(dom, "click",fn);
+</pre>
+<p> 删除这个系统监听：</p>
+<pre class="prettyprint linenums">
+e.unbind(dom, "click",fn);
+</pre>
+
+<p> 增加一个系统监听，只监听一次：</p>
+<pre class="prettyprint linenums">
+e.bindOnce(dom, "click",fn);
+</pre>
+          
+          <h3>使用自定义事件</h3>
+          <p>当你需要自定义自己的事件，又不想自己去编写事件队列代码时，可以使用jsevent</p>
+<p>增加监听：</p>
+<pre class="prettyprint linenums">
+fn = function(data){
+	console.log("1111"+data)
+}；
+
+e.addListener("11",fn);
+</pre>
+
+<p>去除监听：</p>
+<pre class="prettyprint linenums">
+e.removeListener("11",fn);
+</pre>
+
+<p>增加一次监听：</p>
+<pre class="prettyprint linenums">
+e.once("11",fn);
+</pre>
+
+
+<p>触发事件：</p>
+<pre class="prettyprint linenums">
+e.fire("11","11");
+</pre>
+
+
+
+
+		  <h3>使用异步事件队列</h3>
+          <p>有时我们希望，几件事件触发后再执行其他的函数。这里就用到了异步执行队列了。</p>
+		  <p>当11,22事件都触发后调用回调函数。之后触发11,22事件都会再次执行回调函数。</p>
+<pre class="prettyprint linenums">
+e.when("11","22",function(data){console.log("when");console.log(data);});
+e.fire("11","11data");//只触发了11,不调用回调函数.
+e.fire("22","22data");//22也被触发,开始调用回调函数.
+e.fire("11","11datatwo");//再次触发11,调用回调函数,同时更新data.
+/*
+ *when
+ *["11data", "22data"]
+ *when
+ *["11datatwo", "22data"]
+ *
+ *
+ */
+</pre>
+
+         
+
+<p>当11,22事件都触发后调用回调函数。之后触发11,22事件不会再次执行回调函数。</p>
+<pre class="prettyprint linenums">
+e.whenOnce("11","22",function(data){console.log("whenonce");console.log(data);});
+e.fire("11","11data");//只触发了11,不调用回调函数.
+e.fire("22","22data");//22也被触发,开始调用回调函数.
+e.fire("11","11datatwo");//再次触发11,不调用回调函数.
+/*
+ *whenOnce
+ *["11data", "22data"]
+ *
+ */
+
+
+</pre>
+
+   
+<p>当11事件触发两次后执行回调函数。之后触发11事件不会再次执行回调函数。</p>
+<pre class="prettyprint linenums">
+e.after("11",2,function(data){console.log("after");console.log(data);});
+e.fire("11","11data");//只触发了一次11,不调用回调函数.
+e.fire("11","12data");//触发了两次11,调用回调函数.
+e.fire("11","13data");//不再回调
+/*
+ *after
+ *["11data", "12data"]
+ *
+ */
+
+
+</pre>
+
+<h5>举个例子</h5>
+
+		   <p>比如你希望function a,b,c执行完后调用回调函数callback</p>
+		  <div class="alert alert-error"><strong>传统做法</strong>(为每个function增加回调函数，嵌套串行调用):</div>
+<pre class="prettyprint linenums">
+
+function a(callback){
+//some code
+
+callback();
+
+}
+
+function b(callback){
+
+//some code
+
+callback();
+
+}
+
+
+function c(callback){
+
+//some code
+
+callback();
+
+}
+
+function done(){
+
+alert("done!!!");
+}
+
+
+a(b(c(done())));
+
+
+</pre>
+
+<code>嵌套调用非常不好维护,而且串行执行效率不高</code>
+ <div style="height:20px"></div>
+
+ <div class="alert alert-error"><strong>jsevent做法</strong>(使用三个自定义的事件,函数执行后触发自定义事件即可.)</div>
+<pre class="prettyprint linenums">
+e = new JsEvent();
+function a(){
+//some code
+e.fire("a","adata");
+}
+
+function b(){
+//some code
+e.fire("b","bdata");
+}
+
+
+function c(){
+//some code
+e.fire("c","cdata");
+}
+
+function done(data){
+console.log(data);
+
+}
+
+e.when("a","b","c",done);
+
+
+
+a();
+b();
+c();
+
+/*
+ *["adata", "bdata", "cdata"]
+ *
+ *
+ */
+
+</pre>
+      
+<code>异步并行调用，解决嵌套问题便于维护，同时有时效率更高。</code>
+        </section>
+
+
+
+	 <section id="api">
+          <div class="page-header">
+            <h1>api一览</h1>
+          </div>
+
+<table class="table table-bordered table-striped">
+          <thead>
+           <tr>
+             <th style="width: 200px;">method</th>
+             <th style="width: 200px;">Parameters</th>
+            
+             <th>description</th>
+           </tr>
+          </thead>
+          <tbody>
+           <tr>
+             <td>bind(obj, type, fn)</td>
+             <td>
+			
+			 <code>{object}<strong>  obj</strong> dom对象</code><br>
+			<code> {string}<strong>  type</strong> 事件名称</code><br>
+			 <code>{function}<strong>  fn</strong>  回调函数</code>
+
+			 
+			 
+			 </td>
+            
+             <td>给一个dom对象增加一个系统事件监听函数</td>
+           </tr>
+
+		   <tr>
+             <td>unbind(obj, type, fn)</td>
+             <td>
+			
+			 <code>{object}<strong>  obj</strong> dom对象</code><br>
+			<code> {string}<strong>  type</strong> 事件名称</code><br>
+			 <code>{function}<strong>  fn</strong>  回调函数</code>
+
+			 
+			 
+			 </td>
+            
+             <td>对一个dom对象删除指定的系统事件监听。</td>
+           </tr>
+
+		   <tr>
+             <td>bindOnce(obj, type, fn)</td>
+             <td>
+			
+			 <code>{object}<strong>  obj</strong> dom对象</code><br>
+			<code> {string}<strong>  type</strong> 事件名称</code><br>
+			 <code>{function}<strong>  fn</strong>  回调函数</code>
+
+			 
+			 
+			 </td>
+            
+             <td>给一个dom对象增加一个系统事件监听，只监听一次。</td>
+           </tr>
+
+		   <tr>
+             <td>addListener(type, fn)</td>
+             <td>
+			
+			<code> {string}<strong>  type</strong> 事件名称</code><br>
+			 <code>{function}<strong>  fn</strong>  回调函数</code>	 
+			 </td>
+            
+             <td>增加一个自定义事件监听</td>
+           </tr>
+
+		   <tr>
+             <td>removeListener(type, fn)</td>
+             <td>
+			
+			<code> {string}<strong>  type</strong> 事件名称</code><br>
+			 <code>{function}<strong>  fn</strong>  回调函数</code>	 
+			 </td>
+            
+             <td>移除一个自定义事件监听</td>
+           </tr>
+		   <tr>
+             <td>once(type, fn)</td>
+             <td>
+			
+			<code> {string}<strong>  type</strong> 事件名称</code><br>
+			 <code>{function}<strong>  fn</strong>  回调函数</code>	 
+			 </td>
+            
+             <td>增加一个自定义事件监听，只监听一次。</td>
+           </tr>
+		   <tr>
+             <td>fire(type, data)</td>
+             <td>
+			
+			<code> {string}<strong>  type</strong> 事件名称</code><br>
+			 <code>{object}<strong>  data</strong>  返回给回调函数的数据</code>	 
+			 </td>
+            
+             <td>触发一个事件，并传递数据。数据作为一个对象可通过事件的回调函数的data对象访问到。</td>
+           </tr>
+
+		    <tr>
+             <td>when(type1,,,,,,typeN, fn)</td>
+             <td>
+			
+			<code> {string}<strong>  type</strong> 事件名称(多个)</code><br>
+			 <code>{function}<strong>  fn</strong>  回调函数</code>	 
+			 </td>
+            
+             <td>当前面所有的事件都fire后，调用回调函数fn，fn可通过data对象访问到所有事件返回的数据。之后触发其中任意一个事件都<code>会</code>再次执行回调函数。</td>
+           </tr>
+
+		   <tr>
+             <td>whenOnce(type1,,,,,,typeN, fn)</td>
+             <td>
+			
+			<code> {string}<strong>  type</strong> 事件名称(多个)</code><br>
+			 <code>{function}<strong>  fn</strong>  回调函数</code>	 
+			 </td>
+            
+             <td>当前面所有的事件都fire后，调用回调函数fn，fn可通过data对象访问到所有事件返回的数据。之后触发其中任意一个事件都<code>不会</code>再次执行回调函数。</td>
+           </tr>
+		   	   <tr>
+             <td>after(type,times, fn)</td>
+             <td>
+			
+			<code> {string}<strong>  type</strong> 事件名称</code><br>
+			<code> {int}<strong>  times</strong> 次数</code><br>
+			 <code>{function}<strong>  fn</strong>  回调函数</code>	 
+			 </td>
+            
+             <td>当事件触发times次数后执行回调函数。之后触发其中任意一个事件都<code>不会</code>再次执行回调函数。</td>
+           </tr>
+
+
+
+
+
+
+
+        
+           
+          </tbody>
+</table>
+
+     </section>
+
+
+	 	 <section id="contact">
+          <div class="page-header">
+            <h1>联系方式</h1>
+          </div>
+		  <div class="alert alert-info">
+              <strong>邮箱：</strong><span>389920933@qq.com</span><br>
+			  <strong>qq：</strong><span>389920933</span><br>
+			  <strong>github：</strong><span>https://github.com/cherishpeace/</span><br>
+
+
+              
+          </div>
+
+
+
+
+
+         </section>
+
+
+
+      </div>
+    </div>
+
+  </div>
+
+
+
+    <!-- Footer
+    ================================================== -->
+    <footer class="footer">
+      <div class="container">
+        <p class="pull-right"><a href="#">Back to top</a></p>
+        <p>Designed and built with all the love in the world by <a href="#" target="_blank">@cherishpeace</a> </p>
+       
+      </div>
+    </footer>
+
+
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+   
+    <script src="assets/js/jquery.js"></script>
+    <script src="assets/js/google-code-prettify/prettify.js"></script>
+    <script src="assets/js/bootstrap-transition.js"></script>
+    <script src="assets/js/bootstrap-alert.js"></script>
+    <script src="assets/js/bootstrap-modal.js"></script>
+    <script src="assets/js/bootstrap-dropdown.js"></script>
+    <script src="assets/js/bootstrap-scrollspy.js"></script>
+    <script src="assets/js/bootstrap-tab.js"></script>
+    <script src="assets/js/bootstrap-tooltip.js"></script>
+    <script src="assets/js/bootstrap-popover.js"></script>
+    <script src="assets/js/bootstrap-button.js"></script>
+    <script src="assets/js/bootstrap-collapse.js"></script>
+    <script src="assets/js/bootstrap-carousel.js"></script>
+    <script src="assets/js/bootstrap-typeahead.js"></script>
+    <script src="assets/js/bootstrap-affix.js"></script>
+    <script src="assets/js/application.js"></script>
+
+
+
+  </body>
+</html>
